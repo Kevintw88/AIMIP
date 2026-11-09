@@ -11,6 +11,19 @@ def read(name: str):
 def validate():
     instruments = read("instruments.json")
     signals = read("signals.json")
+    schedule = read("schedule_tw.json")
+    assert schedule["adr"] == "ADR-005" and schedule["decision"] == "ACCEPTED"
+    assert schedule["timezone"] == "Asia/Taipei"
+    assert schedule["analysis_frequency"] == "DAILY"
+    assert schedule["basis"] == "PROPOSED_POLL_SCHEDULE_NOT_EXCHANGE_SLA"
+    assert schedule["intraday_trading_enabled"] is False
+    times = [p["time"] for p in schedule["polls"]]
+    assert times == sorted(set(times)), "poll times must be unique and sorted"
+    assert {"07:30", "08:00", "13:50", "15:30", "20:30", "23:00"} <= set(times)
+    assert schedule["critical_data_policy"] == "FAIL_CLOSED"
+    assert schedule["unknown_publication_time"] == "NULL_AND_PIT_UNVERIFIED"
+    assert schedule["reconcile_after_trading_days"] == [1, 2, 5, 20]
+    assert {"PENDING", "PARTIAL", "READY", "STALE", "CORRECTED", "RESTRICTED", "UNAVAILABLE"} <= set(schedule["data_states"])
     assert len(instruments) == 10, "R04 must have exactly 10 research instruments"
     assert len(signals) == 14, "R04 must have exactly 14 signal categories"
     assert len({x["id"] for x in instruments}) == len(instruments)
@@ -32,11 +45,12 @@ def validate():
         "docs/adr/ADR-003-market-order.md",
         "docs/adr/ADR-003A-openbb-conditional.md",
         "docs/adr/ADR-004-balanced-universe.md",
+        "docs/adr/ADR-005-daily-refresh.md",
         "docs/data/data-source-matrix.md",
         "docs/requirements/open-decisions.md",
     ]:
         assert (ROOT / path).is_file(), f"missing specification: {path}"
-    print("PASS: R04 static catalog 10 instruments / 14 signals; ADR files present")
+    print("PASS: R04 static catalog 10 instruments / 14 signals; R05 schedule policy; ADR files present")
     print("NOT TESTED: licenses, exchange metadata, ARM64, headless recovery, live APIs")
 
 if __name__ == "__main__":
