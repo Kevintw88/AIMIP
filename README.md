@@ -1,6 +1,6 @@
 # AI Market Intelligence Platform (AI-MIDEP)
 
-> **Architecture baseline v1.8 (R07 partial) · 2026-11-09 · Specification only — NOT production-ready**
+> **Architecture baseline v1.9 (R07 partial) · 2026-11-09 · Specification only — NOT production-ready**
 
 個人自用的跨市場投資研究平台：合法資料蒐集 → Point-in-Time 量化訊號 → 回測 → AI 輔助研究 → 不可變預測 → 到期評估與模型改善。
 
@@ -17,7 +17,8 @@
 | ADR-006 / R06 | 十年目標（2016-11-09 至 2026-11-09）；PIT 與分批採購 | Accepted design; 7/10 listed early enough, data/rights pending |
 | ADR-007 / R07-01 | 市場資料 API 不設固定月費上限，逐案報價核准 | Accepted; no spending authorized |
 | ADR-007 / R07-02 | 十年歷史資料不設一次性總額上限，逐案報價核准 | Accepted; no spending authorized |
-| R07-03/04 | OpenAI API 月費、備份與 UPS 預算 | PENDING — decide sequentially |
+| ADR-007 / R07-03 | OpenAI API 每月 NT$0，不啟用外部付費 AI 推論 | Accepted; zero spend |
+| R07-04 | Mac mini 備份與 UPS 預算 | PENDING — next decision |
 
 ## 文件索引
 - [Codex 協作規則](AGENTS.md)
@@ -44,7 +45,7 @@
 - 使用 PostgreSQL 管理記錄，Parquet/DuckDB 供授權範圍內之批次研究。
 - R06：2016-11-09 至 2026-11-09 十年研究目標；7 個商品具上市歷史資格，3 個上市時間較短；授權、真實資料列與 PIT vintage 皆待驗證，無採購授權。
 - 確定性程式計算績效；LLM 解讀、提出可驗證假設，**不得改寫已發布預測**。
-- R07-01/02：市場資料月費與十年歷史資料一次性採購均不設類別總額上限，但每筆必須先完成資料缺口評估、正式報價、用途授權與使用者核准；尚無任何授權支出。R07-03/04 尚未定案。
+- R07-01/02：市場資料月費與十年歷史資料一次性採購均不設類別總額上限，但每筆必須先完成資料缺口評估、正式報價、用途授權與使用者核准；尚無任何授權支出。R07-03：OpenAI API 每月／每日／每次呼叫預算 NT$0，禁止付費外部推論；僅允許明確標示的離線 Mock，非 AI 工作不受影響。R07-04 尚未定案。
 - 資料使用權限預設 DENY，另行確認 storage/backtest/AI inference/training 權限。
 - Mac mini 完全無人值守仍為**待實機證明**，不可因 Docker 啟動成功就標示已驗收。
 
