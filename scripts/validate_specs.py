@@ -13,6 +13,7 @@ def validate():
     signals = read("signals.json")
     schedule = read("schedule_tw.json")
     history = read("history_coverage_tw.json")
+    budget = read("budget_policy.json")
     assert schedule["adr"] == "ADR-005" and schedule["decision"] == "ACCEPTED"
     assert schedule["timezone"] == "Asia/Taipei"
     assert schedule["analysis_frequency"] == "DAILY"
@@ -38,6 +39,18 @@ def validate():
     assert all(x["ten_year_listing_eligible"] == (x["listed_at"] <= history["target_start"]) for x in history["instruments"])
     assert all(x["actual_earliest_authorized_row"] is None and not x["pit_verified"] for x in history["instruments"] + history["signals"])
     assert not history["data_access_certified"] and not history["license_approved"] and not history["point_in_time_certified"]
+    assert budget["adr"] == "ADR-007" and budget["decision_status"] == "PARTIALLY_ACCEPTED"
+    assert budget["r07_01"]["status"] == "ACCEPTED"
+    assert budget["r07_01"]["budget_type"] == "NO_FIXED_MONTHLY_CAP"
+    assert budget["r07_01"]["authorization"] == "PER_PURCHASE_QUOTE_AND_EXPLICIT_APPROVAL"
+    assert budget["r07_01"]["monthly_cap_twd"] is None
+    assert budget["r07_01"]["preapproved_spend_twd"] == 0
+    assert budget["procurement_requires_explicit_approval"] and not budget["automatic_purchase_allowed"]
+    for req in ("r07_02", "r07_03", "r07_04"):
+        assert budget[req]["status"] == "PENDING"
+    assert budget["r07_02"]["one_time_cap_twd"] is None and not budget["r07_02"]["purchase_authorized"]
+    assert budget["r07_03"]["monthly_cap_twd"] is None and not budget["r07_03"]["provider_api_keys_approved"]
+    assert budget["r07_04"]["backup_capex_twd"] is None and not budget["r07_04"]["equipment_purchase_authorized"]
     assert len(instruments) == 10, "R04 must have exactly 10 research instruments"
     assert len(signals) == 14, "R04 must have exactly 14 signal categories"
     assert len({x["id"] for x in instruments}) == len(instruments)
@@ -61,11 +74,12 @@ def validate():
         "docs/adr/ADR-004-balanced-universe.md",
         "docs/adr/ADR-005-daily-refresh.md",
         "docs/adr/ADR-006-ten-year-history.md",
+        "docs/adr/ADR-007-budget-governance.md",
         "docs/data/data-source-matrix.md",
         "docs/requirements/open-decisions.md",
     ]:
         assert (ROOT / path).is_file(), f"missing specification: {path}"
-    print("PASS: R04 10+14 catalogs; R05 schedule; R06 10y listing/coverage contract; ADRs")
+    print("PASS: R04 10+14 catalogs; R05 schedule; R06 ten-year policy; R07-01 per-purchase approval, no unapproved spend")
     print("NOT TESTED: actual ten-year vendor rows, license rights, PIT vintages, ARM64, headless recovery, live APIs")
 
 if __name__ == "__main__":
