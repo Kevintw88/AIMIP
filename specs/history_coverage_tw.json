@@ -379,5 +379,8 @@
       "requires_quote": true,
       "source": "https://www.taifex.com.tw/cht/3/hisAppForm"
     }
-  ]
+  ],
+  "target_end_is_verified_completed_bar": false,
+  "actual_latest_completed_trade_date": null,
+  "latest_complete_session_requires_source_check": true
 }
