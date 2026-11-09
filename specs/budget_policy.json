@@ -1,0 +1,65 @@
+{
+  "adr": "ADR-007",
+  "version": "0.1",
+  "decision_status": "PARTIALLY_ACCEPTED",
+  "as_of": "2026-11-09",
+  "currency_default": "TWD",
+  "procurement_requires_explicit_approval": true,
+  "automatic_purchase_allowed": false,
+  "r07_01": {
+    "status": "ACCEPTED",
+    "category": "MARKET_DATA_RECURRING",
+    "budget_type": "NO_FIXED_MONTHLY_CAP",
+    "monthly_cap_twd": null,
+    "authorization": "PER_PURCHASE_QUOTE_AND_EXPLICIT_APPROVAL",
+    "approved_vendors": [],
+    "preapproved_spend_twd": 0,
+    "auto_renewal_default": "OFF_IF_SUPPORTED"
+  },
+  "r07_02": {
+    "status": "PENDING",
+    "category": "HISTORICAL_DATA_ONE_TIME",
+    "budget_type": null,
+    "one_time_cap_twd": null,
+    "purchase_authorized": false
+  },
+  "r07_03": {
+    "status": "PENDING",
+    "category": "AI_INFERENCE_RECURRING",
+    "monthly_cap_twd": null,
+    "daily_cap_twd": null,
+    "per_run_cap_twd": null,
+    "provider_api_keys_approved": false
+  },
+  "r07_04": {
+    "status": "PENDING",
+    "category": "BACKUP_UPS_INFRASTRUCTURE",
+    "backup_capex_twd": null,
+    "ups_capex_twd": null,
+    "offsite_backup_monthly_cap_twd": null,
+    "equipment_purchase_authorized": false
+  },
+  "purchase_gate": [
+    "need_confirmed",
+    "free_alternatives_explored",
+    "dataset_history_verified",
+    "license_rights_verified",
+    "quote_recorded",
+    "tco_compared",
+    "explicit_owner_approval",
+    "explicit_payment_action"
+  ],
+  "accounting_fields": [
+    "committed_twd",
+    "actual_billed_twd",
+    "estimated_accrued_twd",
+    "renewal_risk_twd",
+    "price_valid_until",
+    "quoted_currency",
+    "quoted_amount",
+    "fx_rate_at_estimate",
+    "fx_timestamp"
+  ],
+  "approval_default": "DENY",
+  "source_reference": "https://help.openai.com/en/articles/9186755-managing-projects-in-the-api-platform"
+}
