@@ -1,9 +1,9 @@
 # ADR-007 — Budget Governance, Procurement and Resilience Spending
 
 **Project:** AI Market Intelligence Platform (AI-MIDEP)  
-**Version:** 0.1 (rolling decision record)  
+**Version:** 0.2 (rolling decision record)  
 **Date:** 2026-11-09  
-**Status:** PARTIALLY_ACCEPTED — R07-01 accepted, R07-02/03/04 pending  
+**Status:** PARTIALLY_ACCEPTED — R07-01 and R07-02 accepted; R07-03/04 pending  
 **Related:** ADR-001, ADR-002, ADR-003A, ADR-006
 
 ## 1. Confirmed Decision — R07-01 Recurring Market Data APIs
@@ -48,17 +48,26 @@ All monetary purchases must have:
 - Alerts: proposed default 50%, 80%, 100% of each approved spending ceiling; thresholds are policy proposals, not a current user-selected LLM cap.
 - Auto-renewal OFF by default where vendor allows; remind for manual review prior to renewal. No background reminders scheduled by this ADR.
 
-## 3. R07-02 Historical Backfill — PENDING
+## 3. Confirmed Decision — R07-02 Historical Backfill
 
-Purpose: licensed ten-year price/derivatives/institution position/corporate-action history for Taiwan MVP.
+**Decision:** `APPROVAL_PER_PURCHASE` with **NO FIXED TOTAL ONE-TIME HISTORICAL-DATA ACQUISITION BUDGET CEILING**.
 
-**User decision required:** one-time acquisition budget approach/cap. Alternatives:
-1. No purchases before separate quote review.
-2. NT$10,000 total cap, any purchase separately approved.
-3. NT$30,000 total cap, any purchase separately approved.
-4. No fixed total cap; each official quote approved separately.
+Purpose: licensed ten-year prices, futures/options, institutional positions, corporate actions and historical revision records for the Taiwan MVP, only if necessary and legally obtainable.
 
-No option is selected here. `purchase_authorized=false`, `one_time_cap_twd=null` until user confirms. Do not treat an example price from ADR-006 as a quote for complete ten-year archive.
+**This decision is not a purchase authorization.** Every historical data order requires a separate item-specific user approval; unapproved spending remains **NT$0**.
+
+Each proposed order must document:
+- Exact dataset SKU, provider and **covered years**, required fields and instruments/signals from R04.
+- Measured data gaps relative to legally usable official/free data and lower-cost alternatives.
+- Verified permitted storage, retention, backups, local research/backtests, external AI inference, model training and redistribution, separately.
+- Corporate-action history and whether point-in-time vintages/actual historical publication timestamps are included.
+- Full supplier quote including taxes, currency, expiry, repeat purchases, update/renewal obligations, and any additional historical delivery charges.
+- Cost-benefit review: which specified backtest/evaluation becomes possible, the sample period gained, and whether an alternative shorter-history model is sufficient.
+- Explicit user-approved spend amount **for that exact order**, license and purpose; reroute to approval if data scope, price or usage rights change.
+
+Default `purchase_authorized=false`, `one_time_cap_twd=null` (no category-wide cap), `preapproved_spend_twd=0`, `approved_data_orders=[]`.
+
+A no-fixed-cap decision does **not** waive quotes, license validation, the data acquisition gates in ADR-006, or explicit payment approval. No automatic spending or purchase API is authorized.
 
 ## 4. R07-03 AI API Inference — PENDING
 
@@ -86,7 +95,7 @@ Mac mini M4 32GB/1TB, 24×7 unattended from ADR-002.
 ## 6. Acceptance / Procurement Audit
 
 - FIN-01: R07-01 records **NO_FIXED_CAP + PER_PURCHASE_APPROVAL** and zero preapproved vendors.
-- FIN-02: R07-02/03/04 remain `PENDING`, with NULL limits rather than invented caps.
+- FIN-02: R07-02 is `ACCEPTED`, has `NO_FIXED_TOTAL_CAP` and `one_time_cap_twd=NULL`, but `purchase_authorized=false` and zero preapproved orders/spend. R07-03/04 remain `PENDING` with NULL limits.
 - FIN-03: cost categories cannot borrow limits from each other.
 - FIN-04: candidate purchases lacking license proof, documented need, quotation or final decision cannot be marked approved.
 - FIN-05: recurring subscriptions expose next renewal date and total commitment.
@@ -94,17 +103,17 @@ Mac mini M4 32GB/1TB, 24×7 unattended from ADR-002.
 - FIN-07: no automated checkout, no unattended orders, no API credentials in GitHub.
 - FIN-08: no production readiness claim before ADR-002 FileVault/VM/restore proof.
 - FIN-09: cost assumptions and FX timestamps surfaced in every price comparison.
-- FIN-10: final ADR status becomes ACCEPTED only when the user confirms R07-02, R07-03 and R07-04.
+- FIN-10: final ADR status becomes ACCEPTED only when the user confirms R07-03 and R07-04. R07-01 and R07-02 are already confirmed.
 
 ## 7. Decision History
 
 | ID | Decision | State | Date |
 |---|---|---|---|
 | R07-01 | Recurring market-data API: no fixed monthly cap, case-by-case quote + approval | ACCEPTED | 2026-11-09 |
-| R07-02 | One-time 10-year history acquisition ceiling / process | PENDING | — |
+| R07-02 | One-time ten-year historical data: no fixed aggregate cap, per-quote and license-based individual approval, zero preapproved spend | ACCEPTED | 2026-11-09 |
 | R07-03 | OpenAI inference monthly spending control | PENDING | — |
 | R07-04 | Mac mini backup/UPS equipment and recurring backup budget | PENDING | — |
 
 ## 8. Next Action
 
-Confirm **R07-02 one-time ten-year historical backfill budget approach**. Then confirm R07-03, then R07-04 in separate short decisions. After all are confirmed, finalize this ADR and the corresponding machine-readable spec in GitHub.
+Confirm **R07-03 OpenAI API monthly inference budget ceiling**. Then confirm R07-04 backup/UPS purchase and recurring backup budget separately. Do not infer or auto-select either from R07-01/R07-02. Finalize this ADR only after both decisions are confirmed.
