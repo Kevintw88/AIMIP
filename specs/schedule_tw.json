@@ -1,0 +1,103 @@
+{
+  "version": "1.0",
+  "adr": "ADR-005",
+  "decision": "ACCEPTED",
+  "timezone": "Asia/Taipei",
+  "basis": "PROPOSED_POLL_SCHEDULE_NOT_EXCHANGE_SLA",
+  "analysis_frequency": "DAILY",
+  "intraday_trading_enabled": false,
+  "polls": [
+    {
+      "time": "07:30",
+      "job": "overnight_reconcile",
+      "policy": "PREVIOUS_COMPLETED_SESSIONS"
+    },
+    {
+      "time": "08:00",
+      "job": "premarket_report_gate",
+      "policy": "PIT_SAFE_SNAPSHOTS_ONLY"
+    },
+    {
+      "time": "13:50",
+      "job": "twse_initial_check",
+      "policy": "CHECK_ONLY"
+    },
+    {
+      "time": "14:30",
+      "job": "twse_taifex_poll",
+      "policy": "CHECK_ONLY"
+    },
+    {
+      "time": "15:30",
+      "job": "close_completeness_gate",
+      "policy": "DATASET_READINESS_REQUIRED"
+    },
+    {
+      "time": "16:30",
+      "job": "institutional_margin_poll",
+      "policy": "CHECK_ONLY"
+    },
+    {
+      "time": "18:30",
+      "job": "taifex_late_poll",
+      "policy": "CHECK_ONLY"
+    },
+    {
+      "time": "20:30",
+      "job": "reconciliation_gate",
+      "policy": "DATASET_READINESS_REQUIRED"
+    },
+    {
+      "time": "23:00",
+      "job": "forecast_settlement",
+      "policy": "MATURED_ONLY"
+    }
+  ],
+  "reconcile_after_trading_days": [
+    1,
+    2,
+    5,
+    20
+  ],
+  "retries": {
+    "transient_backoff_minutes": [
+      2,
+      5,
+      15
+    ],
+    "http_429": "RESPECT_RETRY_AFTER",
+    "permission_4xx": "STOP_AND_ALERT",
+    "dedupe_key": [
+      "provider_id",
+      "dataset_id",
+      "trade_date",
+      "session_id",
+      "query_hash"
+    ]
+  },
+  "data_states": [
+    "NOT_DUE",
+    "PENDING",
+    "PARTIAL",
+    "READY",
+    "STALE",
+    "CORRECTED",
+    "RESTRICTED",
+    "UNAVAILABLE"
+  ],
+  "report_states": [
+    "READY",
+    "DEGRADED",
+    "UNAVAILABLE"
+  ],
+  "critical_data_policy": "FAIL_CLOSED",
+  "unknown_publication_time": "NULL_AND_PIT_UNVERIFIED",
+  "requirements": [
+    "license_check_before_operation",
+    "no_synthetic_latest_data",
+    "append_only_revisions",
+    "immutable_forecasts",
+    "market_calendar_required",
+    "as_of_provenance_required"
+  ]
+}
