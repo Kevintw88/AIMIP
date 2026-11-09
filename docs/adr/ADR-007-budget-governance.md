@@ -1,9 +1,9 @@
 # ADR-007 — Budget Governance, Procurement and Resilience Spending
 
 **Project:** AI Market Intelligence Platform (AI-MIDEP)  
-**Version:** 0.3 (rolling decision record)  
+**Version:** 1.0  
 **Date:** 2026-11-09  
-**Status:** PARTIALLY_ACCEPTED — R07-01, R07-02 and R07-03 accepted; R07-04 pending  
+**Status:** ACCEPTED — R07-01 through R07-04 policies confirmed; asset/infrastructure validation still OPEN  
 **Related:** ADR-001, ADR-002, ADR-003A, ADR-006
 
 ## 1. Confirmed Decision — R07-01 Recurring Market Data APIs
@@ -107,20 +107,37 @@ Official reference: https://help.openai.com/en/articles/9186755-managing-project
 - AI-006: model/data rights still enforced independently of budget.
 - AI-007: only future explicit ADR approval can enable nonzero spend and external paid inference.
 
-## 5. R07-04 Mac mini Backup & UPS — PENDING
+## 5. Confirmed Decision — R07-04 Existing Assets First, Zero New Purchase Budget
 
-Mac mini M4 32GB/1TB, 24×7 unattended from ADR-002.
-- Select existing NAS / external SSD / encrypted off-device storage; account for backup capacity, retention and licensed data deletion.
-- Consider USB/HID-manageable UPS that supports safe shutdown, cold-boot power recovery and connected networking gear.
-- Backup/UPS purchases require explicit user price cap and approval; no hidden hardware assumptions.
-- FileVault and headless VM reboot PoC is a **separate technical blocker**; a UPS does not resolve pre-boot disk unlock or Docker Desktop user-login dependency.
-- At least one independent encrypted backup, restoration verification, and key management.
-- Suggested accounting: `backup_capex_twd`, `ups_capex_twd`, `recurring_offsite_backup_twd`, but values TBD.
+**Decision (2026-11-09):** `EXISTING_ASSETS_FIRST_NO_NEW_CAPEX_BUDGET`.
+
+- No new backup hardware, NAS or UPS purchase budget is allocated at this stage: `new_purchase_budget_twd=0`.
+- Use existing equipment **only after inventory, safety and restore verification**; do not infer the user already owns a NAS, SSD or UPS.
+- Equipment model, capacity, health, network topology and encryption features: `NOT_VERIFIED`.
+- Independent/offsite backup location, recurring offsite cost, and actual purchasing approval: **PENDING_VERIFICATION**.
+- `backup_capex_twd=null`, `ups_capex_twd=null` mean unknown component quotes, not zero market price. `offsite_backup_monthly_cap_twd=null` means not decided, not unlimited.
+- `equipment_purchase_authorized=false`, `approved_hardware_orders=[]`, `preapproved_spend_twd=0`.
+- If existing assets do not satisfy the baseline, record the gap and request separate **exact vendor/SKU, scope, cost and explicit approval**. Do not downgrade service safety or backup acceptance to fit the zero-purchase budget.
+- Keep at least one encrypted backup independently recoverable from host failure. Perform `pg_dump`/consistent backup and licensed Parquet/config/forecast backup; restoring a copy of a running VM disk is not proof of consistency.
+- Proposed RPO ≤24h and RTO ≤8h are targets, verified only by clean-target recovery drill. Keys must be recoverable safely and separate from backup data; retention subject to market-data rights.
+- Inventory any existing UPS and evaluate battery/VA/W headroom, output, USB/HID shutdown signal and whether networking gear is covered. If no UPS is present, record residual risk and use an explicitly authorized outage test to demonstrate recovery.
+- A UPS does not bypass FileVault pre-boot authentication and does not prove headless VM startup without login.
+- Do not perform intentional outages, change FileVault/auto-login or install privileged daemons without separate execution authorization.
+
+### Remaining operational checklist
+
+`ASSET-01`: List existing NAS, external SSD/HDD, UPS and usable health/capacity.  
+`ASSET-02`: Demonstrate encrypted independent backup, retention and key recovery.  
+`ASSET-03`: Document clean-target PostgreSQL + data lake recovery and checksums.  
+`ASSET-04`: Verify restoration RPO/RTO and backup error alerts.  
+`ASSET-05`: Measure UPS support or document absence and residual power-loss risk.  
+`ASSET-06`: Determine offsite backup approach/fees, only activate with explicit approval.  
+`ASSET-07`: Obtain item-level approval before any equipment or paid offsite service.
 
 ## 6. Acceptance / Procurement Audit
 
 - FIN-01: R07-01 records **NO_FIXED_CAP + PER_PURCHASE_APPROVAL** and zero preapproved vendors.
-- FIN-02: R07-02 is `ACCEPTED`, has `NO_FIXED_TOTAL_CAP` and `one_time_cap_twd=NULL`, but `purchase_authorized=false` and zero preapproved orders/spend. R07-03 is `ACCEPTED` with NT$0 monthly/daily/per-run caps, no external billable inference. Only R07-04 remains `PENDING` with NULL limits.
+- FIN-02: R07-02 is ACCEPTED without total cap but zero approved purchases; R07-03 has zero monthly/daily/per-run budget and paid inference disabled; R07-04 is ACCEPTED with zero new purchase budget, existing assets still unverified and offsite costs unknown.
 - FIN-03: cost categories cannot borrow limits from each other.
 - FIN-04: candidate purchases lacking license proof, documented need, quotation or final decision cannot be marked approved.
 - FIN-05: recurring subscriptions expose next renewal date and total commitment.
@@ -128,7 +145,7 @@ Mac mini M4 32GB/1TB, 24×7 unattended from ADR-002.
 - FIN-07: no automated checkout, no unattended orders, no API credentials in GitHub.
 - FIN-08: no production readiness claim before ADR-002 FileVault/VM/restore proof.
 - FIN-09: cost assumptions and FX timestamps surfaced in every price comparison.
-- FIN-10: final ADR status becomes ACCEPTED only when the user confirms R07-04. R07-01/02/03 are already confirmed.
+- FIN-10: ADR-007 policy is ACCEPTED; asset inventory, offsite fees, purchase approvals, restoration drills and FileVault/VM PoC remain open and do not imply production readiness.
 
 ## 7. Decision History
 
@@ -137,8 +154,8 @@ Mac mini M4 32GB/1TB, 24×7 unattended from ADR-002.
 | R07-01 | Recurring market-data API: no fixed monthly cap, case-by-case quote + approval | ACCEPTED | 2026-11-09 |
 | R07-02 | One-time ten-year historical data: no fixed aggregate cap, per-quote and license-based individual approval, zero preapproved spend | ACCEPTED | 2026-11-09 |
 | R07-03 | OpenAI API NT$0 per month/day/run; external billable inference disabled, mock-only testing | ACCEPTED | 2026-11-09 |
-| R07-04 | Mac mini backup/UPS equipment and recurring backup budget | PENDING | — |
+| R07-04 | Existing assets first, no new purchase budget; asset inventory/offsite costs and any purchase require separate validation | ACCEPTED policy / OPEN operational items | 2026-11-09 |
 
 ## 8. Next Action
 
-Confirm **R07-04 Mac mini backup media and UPS procurement/budget**. No backup hardware spending policy has yet been selected; finalize ADR-007 only after user confirmation.
+ADR-007 policy is accepted. Continue with [ARR-001](../reviews/ARR-001-R01-R07.md) and [Phase 0 acceptance](../phase0/PHASE0-ACCEPTANCE.md). No equipment purchase or deployment is authorized by this ADR.
