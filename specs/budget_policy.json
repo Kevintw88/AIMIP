@@ -1,6 +1,6 @@
 {
   "adr": "ADR-007",
-  "version": "0.1",
+  "version": "0.2",
   "decision_status": "PARTIALLY_ACCEPTED",
   "as_of": "2026-11-09",
   "currency_default": "TWD",
@@ -17,11 +17,26 @@
     "auto_renewal_default": "OFF_IF_SUPPORTED"
   },
   "r07_02": {
-    "status": "PENDING",
+    "status": "ACCEPTED",
     "category": "HISTORICAL_DATA_ONE_TIME",
-    "budget_type": null,
+    "budget_type": "NO_FIXED_TOTAL_CAP",
     "one_time_cap_twd": null,
-    "purchase_authorized": false
+    "authorization": "PER_DATASET_QUOTE_LICENSE_AND_EXPLICIT_APPROVAL",
+    "preapproved_spend_twd": 0,
+    "approved_data_orders": [],
+    "purchase_authorized": false,
+    "approval_requirements": [
+      "documented_historical_data_gap",
+      "legal_free_sources_reviewed",
+      "exact_dataset_and_covered_dates",
+      "official_supplier_quote_with_expiry",
+      "permitted_storage_and_backup",
+      "permitted_backtesting",
+      "third_party_ai_inference_rights_if_used",
+      "point_in_time_vintage_evidence_if_required",
+      "cost_benefit_comparison",
+      "explicit_user_approval_of_exact_order_and_amount"
+    ]
   },
   "r07_03": {
     "status": "PENDING",
