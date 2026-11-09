@@ -1,12 +1,13 @@
 # AGENTS.md — AI-MIDEP Codex Rules
 ## Status
-This repository is in **specification freeze preparation**. Do not begin application development until the user approves R06–R07, data licensing, and Phase 0 initiation. R05 has been accepted as a schedule and data-freshness specification, not tested production behavior.
+This repository is in **specification freeze preparation**. Do not begin application development until the user approves R07, data licensing, and Phase 0 initiation. R06 historical target is approved but data gaps/rights/PIT proof are NOT resolved. R05 has been accepted as a schedule and data-freshness specification, not tested production behavior.
 
 ## Scope
 - Single user; Taiwan → US → Japan; Taiwan MVP 10 investment instruments + 14 market signal categories.
 - Mac mini M4, 32GB RAM, 1TB SSD; host macOS, proposed headless Linux ARM64 VM, **unattended recovery unverified**.
 - OpenBB V5 *conditional* adapter, not an unconditional runtime dependency.
 - ADR-005: daily-bar analysis with multiple dataset-aware polls, delayed-release and corrections checks, append-only revisions, immutable forecasts. Schedule is not a publication SLA.
+- ADR-006: 2016-11-09–2026-11-09 ten-year objective only; 7 listing-eligible and 3 structurally short instruments. No dataset is certified for retention, ten-year completeness, or PIT-safe historical vintages.
 - No live brokerage order execution, no public data redistribution.
 ## Hard rules
 1. Unknown provider usage license = DENY. Separate permissions for download, retention, local storage, historical backtest, third-party LLM inference, ML training, redistribution, backups.
@@ -21,6 +22,8 @@ This repository is in **specification freeze preparation**. Do not begin applica
 10. Verify Linux/ARM64, dependencies, and provider rights via PoC before marking production-capable.
 11. Use exchange trading calendars, distinct observation / publication / first-seen / ingestion timestamps and explicit unknowns; never infer that a poll time equals publication time.
 12. Poll/retry with provider quotas, idempotent backfill, T+1/T+2/T+5/T+20 trading-day checks only when permitted; preserve revisions and report amendments without editing original forecasts.
+13. Do not treat listing dates as fetched OHLCV coverage, web query start as API authorization, current adjusted prices as PIT vintages, or synthetic index histories as true ETF prices.
+14. No paid data purchases before approved R07 budget, confirmed dataset gap, supplier quote, rights review and explicit user authorization.
 ## Change process
 - Each ADR needs decision, scope, constraints, alternatives, validation status, follow-up.
 - Preserve explicitly unresolved decisions as PENDING/BLOCKED; never silently treat proposals as proven.
