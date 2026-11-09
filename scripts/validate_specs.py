@@ -12,6 +12,7 @@ def validate():
     instruments = read("instruments.json")
     signals = read("signals.json")
     schedule = read("schedule_tw.json")
+    history = read("history_coverage_tw.json")
     assert schedule["adr"] == "ADR-005" and schedule["decision"] == "ACCEPTED"
     assert schedule["timezone"] == "Asia/Taipei"
     assert schedule["analysis_frequency"] == "DAILY"
@@ -24,6 +25,17 @@ def validate():
     assert schedule["unknown_publication_time"] == "NULL_AND_PIT_UNVERIFIED"
     assert schedule["reconcile_after_trading_days"] == [1, 2, 5, 20]
     assert {"PENDING", "PARTIAL", "READY", "STALE", "CORRECTED", "RESTRICTED", "UNAVAILABLE"} <= set(schedule["data_states"])
+    assert history["adr"] == "ADR-006" and history["decision"] == "ACCEPTED"
+    assert history["target_years"] == 10
+    assert (history["target_start"], history["target_end"]) == ("2016-11-09", "2026-11-09")
+    assert len(history["instruments"]) == 10
+    assert len(history["signals"]) == 14
+    assert {x["symbol"] for x in history["instruments"]} == {x["symbol"] for x in instruments}
+    assert {x["id"] for x in history["signals"]} == {x["id"] for x in signals}
+    assert sum(x["ten_year_listing_eligible"] for x in history["instruments"]) == 7
+    assert all(x["ten_year_listing_eligible"] == (x["listed_at"] <= history["target_start"]) for x in history["instruments"])
+    assert all(x["actual_earliest_authorized_row"] is None and not x["pit_verified"] for x in history["instruments"] + history["signals"])
+    assert not history["data_access_certified"] and not history["license_approved"] and not history["point_in_time_certified"]
     assert len(instruments) == 10, "R04 must have exactly 10 research instruments"
     assert len(signals) == 14, "R04 must have exactly 14 signal categories"
     assert len({x["id"] for x in instruments}) == len(instruments)
@@ -46,12 +58,13 @@ def validate():
         "docs/adr/ADR-003A-openbb-conditional.md",
         "docs/adr/ADR-004-balanced-universe.md",
         "docs/adr/ADR-005-daily-refresh.md",
+        "docs/adr/ADR-006-ten-year-history.md",
         "docs/data/data-source-matrix.md",
         "docs/requirements/open-decisions.md",
     ]:
         assert (ROOT / path).is_file(), f"missing specification: {path}"
-    print("PASS: R04 static catalog 10 instruments / 14 signals; R05 schedule policy; ADR files present")
-    print("NOT TESTED: licenses, exchange metadata, ARM64, headless recovery, live APIs")
+    print("PASS: R04 10+14 catalogs; R05 schedule; R06 10y listing/coverage contract; ADRs")
+    print("NOT TESTED: actual ten-year vendor rows, license rights, PIT vintages, ARM64, headless recovery, live APIs")
 
 if __name__ == "__main__":
     validate()
