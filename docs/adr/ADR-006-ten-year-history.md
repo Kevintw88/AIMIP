@@ -5,7 +5,7 @@
 **Decision:** ACCEPTED — R06 ten-calendar-year objective
 **Status:** Design accepted; actual provider data coverage, access & licensing **NOT YET VERIFIED**
 **As of:** 2026-11-09
-**Target research window (inclusive):** 2016-11-09 to 2026-11-09 (Asia/Taipei)
+**Target research window (inclusive):** 2016-11-09 to 2026-11-09 (Asia/Taipei). **Target end is a planning boundary, NOT evidence of the latest finalized daily bar.** At report time on 2026-11-09 (before Taiwan cash close), completed daily sessions only extend through the prior trading day, subject to actual source confirmation.
 **Related:** ADR-001, ADR-003, ADR-004, ADR-005, ADR-003A
 
 ## 1. Architectural decision
