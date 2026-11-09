@@ -46,9 +46,15 @@ def validate():
     assert budget["r07_01"]["monthly_cap_twd"] is None
     assert budget["r07_01"]["preapproved_spend_twd"] == 0
     assert budget["procurement_requires_explicit_approval"] and not budget["automatic_purchase_allowed"]
-    for req in ("r07_02", "r07_03", "r07_04"):
+    assert budget["r07_02"]["status"] == "ACCEPTED"
+    assert budget["r07_02"]["budget_type"] == "NO_FIXED_TOTAL_CAP"
+    assert budget["r07_02"]["authorization"] == "PER_DATASET_QUOTE_LICENSE_AND_EXPLICIT_APPROVAL"
+    assert budget["r07_02"]["one_time_cap_twd"] is None
+    assert budget["r07_02"]["preapproved_spend_twd"] == 0
+    assert budget["r07_02"]["approved_data_orders"] == []
+    assert budget["r07_02"]["purchase_authorized"] is False
+    for req in ("r07_03", "r07_04"):
         assert budget[req]["status"] == "PENDING"
-    assert budget["r07_02"]["one_time_cap_twd"] is None and not budget["r07_02"]["purchase_authorized"]
     assert budget["r07_03"]["monthly_cap_twd"] is None and not budget["r07_03"]["provider_api_keys_approved"]
     assert budget["r07_04"]["backup_capex_twd"] is None and not budget["r07_04"]["equipment_purchase_authorized"]
     assert len(instruments) == 10, "R04 must have exactly 10 research instruments"
@@ -79,7 +85,7 @@ def validate():
         "docs/requirements/open-decisions.md",
     ]:
         assert (ROOT / path).is_file(), f"missing specification: {path}"
-    print("PASS: R04 10+14 catalogs; R05 schedule; R06 ten-year policy; R07-01 per-purchase approval, no unapproved spend")
+    print("PASS: R04 10+14 catalogs; R05 schedule; R06 ten-year policy; R07-01/02 per-purchase approvals, zero unapproved spending")
     print("NOT TESTED: actual ten-year vendor rows, license rights, PIT vintages, ARM64, headless recovery, live APIs")
 
 if __name__ == "__main__":
