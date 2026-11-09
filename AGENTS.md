@@ -1,6 +1,6 @@
 # AGENTS.md — AI-MIDEP Codex Rules
 ## Status
-This repository is in **specification freeze preparation**. Do not begin application development until the user approves *all* R07-01/02/03/04 (only R07-01 approved), data licensing, and Phase 0 initiation. R06 historical target is approved but data gaps/rights/PIT proof are NOT resolved. R05 has been accepted as a schedule and data-freshness specification, not tested production behavior.
+This repository is in **specification freeze preparation**. Do not begin application development until the user approves *all* R07-01/02/03/04 (R07-01 and R07-02 approved; R07-03/04 pending), data licensing, and Phase 0 initiation. R06 historical target is approved but data gaps/rights/PIT proof are NOT resolved. R05 has been accepted as a schedule and data-freshness specification, not tested production behavior.
 
 ## Scope
 - Single user; Taiwan → US → Japan; Taiwan MVP 10 investment instruments + 14 market signal categories.
@@ -8,7 +8,7 @@ This repository is in **specification freeze preparation**. Do not begin applica
 - OpenBB V5 *conditional* adapter, not an unconditional runtime dependency.
 - ADR-005: daily-bar analysis with multiple dataset-aware polls, delayed-release and corrections checks, append-only revisions, immutable forecasts. Schedule is not a publication SLA.
 - ADR-006: 2016-11-09–2026-11-09 ten-year objective only; 7 listing-eligible and 3 structurally short instruments. No dataset is certified for retention, ten-year completeness, or PIT-safe historical vintages.
-- ADR-007 PARTIAL: recurring market-data API monthly category has NO_FIXED_MONTHLY_CAP but every vendor purchase requires explicit quote/rights/user approval. R07-02 historical one-time, R07-03 AI inference, R07-04 backup/UPS are PENDING; no new purchases or subscriptions are authorized.
+- ADR-007 PARTIAL: R07-01 recurring market-data APIs have NO_FIXED_MONTHLY_CAP; R07-02 one-time historical data has NO_FIXED_TOTAL_CAP. Both are *approval policies*, not spending approval. For each order, confirm the exact data gap, provider quotation, permitted license uses, coverage, price, and explicit user approval. R07-03 AI inference and R07-04 backup/UPS are PENDING; no new purchases, subscriptions or paid jobs are authorized.
 - No live brokerage order execution, no public data redistribution.
 ## Hard rules
 1. Unknown provider usage license = DENY. Separate permissions for download, retention, local storage, historical backtest, third-party LLM inference, ML training, redistribution, backups.
