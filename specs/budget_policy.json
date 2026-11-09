@@ -1,7 +1,7 @@
 {
   "adr": "ADR-007",
-  "version": "0.3",
-  "decision_status": "PARTIALLY_ACCEPTED",
+  "version": "1.0",
+  "decision_status": "ACCEPTED",
   "as_of": "2026-11-09",
   "currency_default": "TWD",
   "procurement_requires_explicit_approval": true,
@@ -76,12 +76,44 @@
     "require_new_explicit_adr_approval_before_enabling": true
   },
   "r07_04": {
-    "status": "PENDING",
+    "status": "ACCEPTED",
     "category": "BACKUP_UPS_INFRASTRUCTURE",
+    "policy": "EXISTING_ASSETS_FIRST_NO_NEW_CAPEX_BUDGET",
+    "new_purchase_budget_twd": 0,
     "backup_capex_twd": null,
     "ups_capex_twd": null,
     "offsite_backup_monthly_cap_twd": null,
-    "equipment_purchase_authorized": false
+    "equipment_purchase_authorized": false,
+    "offsite_subscription_authorized": false,
+    "approved_hardware_orders": [],
+    "preapproved_spend_twd": 0,
+    "existing_backup_media_verified": false,
+    "existing_ups_verified": false,
+    "backup_destination_verified": false,
+    "offsite_backup_location_verified": false,
+    "offsite_cost_verified": false,
+    "restore_test_passed": false,
+    "power_loss_recovery_test_passed": false,
+    "inventory_status": "PENDING_VERIFICATION",
+    "unknown_component_quote_semantics": "NULL_IS_UNKNOWN_NOT_ZERO",
+    "safety_requirements": [
+      "INDEPENDENT_ENCRYPTED_RECOVERABLE_BACKUP",
+      "RESTORE_TEST_REQUIRED",
+      "BACKUP_KEYS_SEPARATE",
+      "LICENSE_AWARE_RETENTION",
+      "EXISTING_UPS_ASSESSMENT_IF_PRESENT",
+      "RPO_24H_RTO_8H_TARGETS_UNVERIFIED"
+    ],
+    "outstanding_items": [
+      "EXISTING_EQUIPMENT_INVENTORY",
+      "EXTERNAL_STORAGE_HEALTH_AND_CAPACITY",
+      "RESTORE_KEYS_AND_RETENTION",
+      "CLEAN_RECOVERY_DRILL",
+      "UPS_FUNCTION_OR_RESIDUAL_RISK",
+      "OFFSITE_LOCATION_AND_RECURRING_COST",
+      "EXPLICIT_APPROVAL_BEFORE_ANY_PURCHASE"
+    ],
+    "requires_explicit_approval_for_any_future_purchase": true
   },
   "purchase_gate": [
     "need_confirmed",
