@@ -1,0 +1,156 @@
+[
+  {
+    "id": "TAIEX",
+    "label": "加權指數",
+    "provider_candidate": "TWSE",
+    "market": "TW",
+    "layer": "MARKET_INTELLIGENCE",
+    "priority": "P0",
+    "license_status": "PENDING",
+    "dataset_verified": false,
+    "history_verified": false
+  },
+  {
+    "id": "TAIWAN50",
+    "label": "臺灣50指數",
+    "provider_candidate": "TWSE",
+    "market": "TW",
+    "layer": "MARKET_INTELLIGENCE",
+    "priority": "P0",
+    "license_status": "PENDING",
+    "dataset_verified": false,
+    "history_verified": false
+  },
+  {
+    "id": "TPEX_INDEX",
+    "label": "櫃買指數",
+    "provider_candidate": "TPEx",
+    "market": "TW",
+    "layer": "MARKET_INTELLIGENCE",
+    "priority": "P0",
+    "license_status": "PENDING",
+    "dataset_verified": false,
+    "history_verified": false
+  },
+  {
+    "id": "CASH_TURNOVER",
+    "label": "大盤成交金額",
+    "provider_candidate": "TWSE",
+    "market": "TW",
+    "layer": "MARKET_INTELLIGENCE",
+    "priority": "P0",
+    "license_status": "PENDING",
+    "dataset_verified": false,
+    "history_verified": false
+  },
+  {
+    "id": "MARKET_BREADTH",
+    "label": "上漲與下跌家數",
+    "provider_candidate": "TWSE/TPEx",
+    "market": "TW",
+    "layer": "MARKET_INTELLIGENCE",
+    "priority": "P0",
+    "license_status": "PENDING",
+    "dataset_verified": false,
+    "history_verified": false
+  },
+  {
+    "id": "MARGIN_FINANCING",
+    "label": "融資餘額及增減",
+    "provider_candidate": "TWSE",
+    "market": "TW",
+    "layer": "MARKET_INTELLIGENCE",
+    "priority": "P0",
+    "license_status": "PENDING",
+    "dataset_verified": false,
+    "history_verified": false
+  },
+  {
+    "id": "MARGIN_SHORT",
+    "label": "融券餘額及增減",
+    "provider_candidate": "TWSE",
+    "market": "TW",
+    "layer": "MARKET_INTELLIGENCE",
+    "priority": "P0",
+    "license_status": "PENDING",
+    "dataset_verified": false,
+    "history_verified": false
+  },
+  {
+    "id": "INSTITUTIONAL_CASH",
+    "label": "三大法人現貨買賣超",
+    "provider_candidate": "TWSE",
+    "market": "TW",
+    "layer": "MARKET_INTELLIGENCE",
+    "priority": "P0",
+    "license_status": "PENDING",
+    "dataset_verified": false,
+    "history_verified": false
+  },
+  {
+    "id": "TAIEX_FUTURES",
+    "label": "台指期價格、量與未平倉",
+    "provider_candidate": "TAIFEX",
+    "market": "TW",
+    "layer": "MARKET_INTELLIGENCE",
+    "priority": "P0",
+    "license_status": "PENDING",
+    "dataset_verified": false,
+    "history_verified": false
+  },
+  {
+    "id": "FOREIGN_FUTURES_POSITION",
+    "label": "外資期貨淨部位",
+    "provider_candidate": "TAIFEX",
+    "market": "TW",
+    "layer": "MARKET_INTELLIGENCE",
+    "priority": "P0",
+    "license_status": "PENDING",
+    "dataset_verified": false,
+    "history_verified": false
+  },
+  {
+    "id": "OPTIONS_VOLUME_PCR",
+    "label": "Put/Call 成交量比",
+    "provider_candidate": "TAIFEX",
+    "market": "TW",
+    "layer": "MARKET_INTELLIGENCE",
+    "priority": "P0",
+    "license_status": "PENDING",
+    "dataset_verified": false,
+    "history_verified": false
+  },
+  {
+    "id": "OPTIONS_OI_PCR",
+    "label": "Put/Call 未平倉量比",
+    "provider_candidate": "TAIFEX",
+    "market": "TW",
+    "layer": "MARKET_INTELLIGENCE",
+    "priority": "P0",
+    "license_status": "PENDING",
+    "dataset_verified": false,
+    "history_verified": false
+  },
+  {
+    "id": "ETF_UNITS_FLOW",
+    "label": "ETF 受益單位數及申贖",
+    "provider_candidate": "TWSE/fund-manager",
+    "market": "TW",
+    "layer": "MARKET_INTELLIGENCE",
+    "priority": "P0",
+    "license_status": "PENDING",
+    "dataset_verified": false,
+    "history_verified": false
+  },
+  {
+    "id": "ETF_NAV_PREMIUM",
+    "label": "ETF 淨值與折溢價",
+    "provider_candidate": "TWSE/fund-manager",
+    "market": "TW",
+    "layer": "MARKET_INTELLIGENCE",
+    "priority": "P0",
+    "license_status": "PENDING",
+    "dataset_verified": false,
+    "history_verified": false
+  }
+]
