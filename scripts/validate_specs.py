@@ -27,6 +27,8 @@ def validate():
     assert {"PENDING", "PARTIAL", "READY", "STALE", "CORRECTED", "RESTRICTED", "UNAVAILABLE"} <= set(schedule["data_states"])
     assert history["adr"] == "ADR-006" and history["decision"] == "ACCEPTED"
     assert history["target_years"] == 10
+    assert history["target_end_is_verified_completed_bar"] is False
+    assert history["actual_latest_completed_trade_date"] is None
     assert (history["target_start"], history["target_end"]) == ("2016-11-09", "2026-11-09")
     assert len(history["instruments"]) == 10
     assert len(history["signals"]) == 14
