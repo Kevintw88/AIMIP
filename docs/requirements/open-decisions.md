@@ -1,6 +1,6 @@
 # Outstanding Decisions — as of 2026-11-09
 ## Confirmed
-R01 personal-only. R02 Mac mini M4/32GB/1TB; zero-login self-recovery requirement. R03 Taiwan→US→Japan. R03.5 OpenBB conditional. R04 balanced 10 investment instruments + 14 signals. R05 daily-bar based analysis with multiple polling windows, revision handling, idempotent catch-up, and dataset readiness gates (ADR-005). R06 ten-year 2016-11-09–2026-11-09 research objective with 7 listing-eligible/3 shorter instruments, incremental data purchase gates and PIT controls (ADR-006). R07-01 recurring market data API budget policy is no fixed monthly cap, each quote/license/renewal individually approved. R07-02 historical one-time data has no fixed total cap; each exact dataset, quotation and license is individually approved (ADR-007 v0.2).
+R01 personal-only. R02 Mac mini M4/32GB/1TB; zero-login self-recovery requirement. R03 Taiwan→US→Japan. R03.5 OpenBB conditional. R04 balanced 10 investment instruments + 14 signals. R05 daily-bar based analysis with multiple polling windows, revision handling, idempotent catch-up, and dataset readiness gates (ADR-005). R06 ten-year 2016-11-09–2026-11-09 research objective with 7 listing-eligible/3 shorter instruments, incremental data purchase gates and PIT controls (ADR-006). R07-01 recurring market data API budget policy is no fixed monthly cap, each quote/license/renewal individually approved. R07-02 historical one-time data has no fixed total cap; each exact dataset, quotation and license is individually approved (ADR-007 v0.2). R07-03 OpenAI API has a zero monthly/daily/per-call budget and all external paid inference is disabled (ADR-007 v0.3).
 ## Blockers before deployment
 - BOOT-PoC: cold reboot, FileVault preboot unlock, headless VM, daemon, UPS and restoration, actual ARM64 compatibility; cannot claim production readiness.
 - Licenses: each API dataset download, retention, backtest, LLM inference, model training, backup, rate limits and commercial usage.
@@ -16,10 +16,14 @@ R07-01 ACCEPTED: recurring market data subscriptions have no fixed monthly categ
 
 R07-02 ACCEPTED: once-off ten-year historical-data acquisition has no fixed *aggregate* cap, but each actual dataset, covered period, supplier quote, license and payment amount must be individually approved. These choices establish purchasing governance only — **preapproved spending is zero**.
 
+R07-03 ACCEPTED: OpenAI API monthly/daily/per-run NT$0. No paid external language/embedding/AI requests, no billable model fallback, and no API credentials or payments are authorized. Local MOCK_ONLY tests and deterministic non-AI research are allowed. 
+
 See [ADR-007](../adr/ADR-007-budget-governance.md) and [budget policy](../../specs/budget_policy.json).
 
-## Next: R07-03 (OpenAI API monthly inference budget)
-Set AI inference monthly budget policy/cap, with distinct project key, pre-call allowance check, provider-side alerts and `AI_BUDGET_PAUSED` on exhaustion. **Not decided.** Then request separate R07-04 external encrypted backups + UPS budget. Both remain PENDING and neither should be preselected. No new paid API jobs, equipment orders or autonomous payments are permitted.
+## Next: R07-04 (Mac mini encrypted backup / UPS budget)
+R07-04 remains PENDING. Ask the user for their hardware/backup cost-policy choice without auto-selecting a cap or assuming existing equipment. Plan encrypted backup to a physically separate device and UPS capable of supervised safe shutdown. Hardware purchases and recurring offsite backup plans need explicit authorization. FileVault unattended unlock remains a separate technical blocker that UPS cannot resolve.
+
+No paid API jobs, hardware purchases or autonomous payments are permitted.
 
 ## Before full development
 Machine-readable coverage flags remain PENDING; Mac mini headless + FileVault PoC, OpenBB ARM64 spike, release-time contracts, data permissions, corporate actions and empirical completeness all need verification.
