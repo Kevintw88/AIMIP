@@ -1,9 +1,9 @@
 # ADR-007 — Budget Governance, Procurement and Resilience Spending
 
 **Project:** AI Market Intelligence Platform (AI-MIDEP)  
-**Version:** 0.2 (rolling decision record)  
+**Version:** 0.3 (rolling decision record)  
 **Date:** 2026-11-09  
-**Status:** PARTIALLY_ACCEPTED — R07-01 and R07-02 accepted; R07-03/04 pending  
+**Status:** PARTIALLY_ACCEPTED — R07-01, R07-02 and R07-03 accepted; R07-04 pending  
 **Related:** ADR-001, ADR-002, ADR-003A, ADR-006
 
 ## 1. Confirmed Decision — R07-01 Recurring Market Data APIs
@@ -69,18 +69,43 @@ Default `purchase_authorized=false`, `one_time_cap_twd=null` (no category-wide c
 
 A no-fixed-cap decision does **not** waive quotes, license validation, the data acquisition gates in ADR-006, or explicit payment approval. No automatic spending or purchase API is authorized.
 
-## 4. R07-03 AI API Inference — PENDING
+## 4. Confirmed Decision — R07-03 OpenAI API Inference Budget (ZERO)
 
-Separate from ChatGPT subscription and from historical data subscriptions.
+**Decision (2026-11-09):** `ZERO_MONTHLY_BUDGET_NO_PAID_AI`.
 
-Design candidate:
-- Dedicated provider project/API key scoped to AI-MIDEP, usage logging, model allowlist.
-- `daily_tokens_cap`, `monthly_inference_cap_twd`, `per_run_cost_cap_twd`, reserve/commit accounting, retry limits, prompt/response caching policy as permitted.
-- If cap is reached: suspend **optional AI inference**, preserve ingestion/quant/backtesting and return `AI_BUDGET_PAUSED`. Never claim scheduled AI report completed when disabled.
-- Provider-side spend alerts **plus** optional hard limit, with independent application-side pre-call cost estimate and conservative block. Billing enforcement may be delayed and billing conversion requires an FX estimate.
+- Monthly OpenAI API budget: **NT$0**. Daily budget: **NT$0**. Per-run/per-call budget: **NT$0**.
+- `paid_inference_enabled=false`, `external_provider_calls_enabled=false`, `provider_api_keys_approved=false`, `billing_authorized=false`.
+- No production OpenAI API project, API keys, paid model allowlist or billing setup is authorized. ChatGPT subscription and API billing are separate.
+- Do not call paid embeddings, language, vision, reranking or alternative model vendors. Do not use existing paid credit or free promotional allowances as a loophole: any external AI use requires a separate explicit later decision.
+- Only clearly labeled offline `MOCK_ONLY` tests and deterministic non-AI reports are permitted. Never imply a mocked output is actual AI inference.
+- Cost control is **application-side fail-closed**; do not rely on vendor-side warnings alone.
 
-Official updated OpenAI project spend rules: https://help.openai.com/en/articles/9186755-managing-projects-in-the-api-platform
-No monthly ceiling or account subscription is authorized yet.
+### Call authorization / zero-budget preflight
+1. Before queueing or sending any potentially billable AI API request, inspect approved model list, data's external inference rights, budget policy version, and remaining monthly/daily/per-run allowance.
+2. Under R07-03, **DENY every chargeable request even if estimated tokens/cost are zero or unknown**, record local `AI_BUDGET_PAUSED`, and do not load provider secrets.
+3. Deny all retries, alternative model/provider fallback, AI embeddings, and background AI calls.
+4. Continue authorized data collection, deterministic Quant, backtests, forecasting settlement and backups unaffected.
+5. AI-specific report sections use `AI_DISABLED_ZERO_BUDGET` and must not fabricate AI analyses or forecasts.
+6. No API credentials or payments are activated by this documentation.
+
+### Cost monitoring contract
+- Limits: `monthly_cap_twd=0`, `daily_cap_twd=0`, `per_run_cap_twd=0`, preapproved spend 0.
+- Locally log denied/mock `job_id`, model id (if applicable), estimated input/output tokens, estimated TWD fee with price/FX assumption if known, policy version, denial reason, and timestamp. No externally billed usage is implied when no request is sent.
+- Only mark actual billed tokens and fees after permitted provider receipts; omit secrets, licensed raw inputs, prompts and other sensitive data from logs.
+- Daily accounting: Asia/Taipei. Monthly invoice reconciliation: supplier-defined cycle; currently assume UTC for planning and verify before any future paid enablement.
+- For a future explicit nonzero policy, implement atomic per-call reservations, concurrency controls, post-call reconciliation, provider project alerts and optional enforced hard limits.
+- OpenAI's current project limits can issue alerts or optionally enforce hard limits; alerts do not halt traffic and enforced limits may lag. Application-side denial is mandatory even when provider spend is configured to zero.
+
+Official reference: https://help.openai.com/en/articles/9186755-managing-projects-in-the-api-platform
+
+### R07-03 acceptance criteria (design; NOT runtime-tested)
+- AI-001: zero-cost and unknown-cost estimated billable calls are denied before network transmission.
+- AI-002: disabled AI does not load keys or perform paid retries/fallbacks.
+- AI-003: mock-only calls and denied jobs have non-billable ledgers; actual billed usage only from receipts.
+- AI-004: AI-dependent reports explicitly indicate unavailable AI, never fabricated results.
+- AI-005: data/quant/backtest/settlement continue independently.
+- AI-006: model/data rights still enforced independently of budget.
+- AI-007: only future explicit ADR approval can enable nonzero spend and external paid inference.
 
 ## 5. R07-04 Mac mini Backup & UPS — PENDING
 
@@ -95,7 +120,7 @@ Mac mini M4 32GB/1TB, 24×7 unattended from ADR-002.
 ## 6. Acceptance / Procurement Audit
 
 - FIN-01: R07-01 records **NO_FIXED_CAP + PER_PURCHASE_APPROVAL** and zero preapproved vendors.
-- FIN-02: R07-02 is `ACCEPTED`, has `NO_FIXED_TOTAL_CAP` and `one_time_cap_twd=NULL`, but `purchase_authorized=false` and zero preapproved orders/spend. R07-03/04 remain `PENDING` with NULL limits.
+- FIN-02: R07-02 is `ACCEPTED`, has `NO_FIXED_TOTAL_CAP` and `one_time_cap_twd=NULL`, but `purchase_authorized=false` and zero preapproved orders/spend. R07-03 is `ACCEPTED` with NT$0 monthly/daily/per-run caps, no external billable inference. Only R07-04 remains `PENDING` with NULL limits.
 - FIN-03: cost categories cannot borrow limits from each other.
 - FIN-04: candidate purchases lacking license proof, documented need, quotation or final decision cannot be marked approved.
 - FIN-05: recurring subscriptions expose next renewal date and total commitment.
@@ -103,7 +128,7 @@ Mac mini M4 32GB/1TB, 24×7 unattended from ADR-002.
 - FIN-07: no automated checkout, no unattended orders, no API credentials in GitHub.
 - FIN-08: no production readiness claim before ADR-002 FileVault/VM/restore proof.
 - FIN-09: cost assumptions and FX timestamps surfaced in every price comparison.
-- FIN-10: final ADR status becomes ACCEPTED only when the user confirms R07-03 and R07-04. R07-01 and R07-02 are already confirmed.
+- FIN-10: final ADR status becomes ACCEPTED only when the user confirms R07-04. R07-01/02/03 are already confirmed.
 
 ## 7. Decision History
 
@@ -111,9 +136,9 @@ Mac mini M4 32GB/1TB, 24×7 unattended from ADR-002.
 |---|---|---|---|
 | R07-01 | Recurring market-data API: no fixed monthly cap, case-by-case quote + approval | ACCEPTED | 2026-11-09 |
 | R07-02 | One-time ten-year historical data: no fixed aggregate cap, per-quote and license-based individual approval, zero preapproved spend | ACCEPTED | 2026-11-09 |
-| R07-03 | OpenAI inference monthly spending control | PENDING | — |
+| R07-03 | OpenAI API NT$0 per month/day/run; external billable inference disabled, mock-only testing | ACCEPTED | 2026-11-09 |
 | R07-04 | Mac mini backup/UPS equipment and recurring backup budget | PENDING | — |
 
 ## 8. Next Action
 
-Confirm **R07-03 OpenAI API monthly inference budget ceiling**. Then confirm R07-04 backup/UPS purchase and recurring backup budget separately. Do not infer or auto-select either from R07-01/R07-02. Finalize this ADR only after both decisions are confirmed.
+Confirm **R07-04 Mac mini backup media and UPS procurement/budget**. No backup hardware spending policy has yet been selected; finalize ADR-007 only after user confirmation.
