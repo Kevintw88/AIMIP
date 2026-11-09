@@ -1,6 +1,6 @@
 # AI Market Intelligence Platform (AI-MIDEP)
 
-> **Architecture baseline v1.6 · 2026-11-09 · Specification only — NOT production-ready**
+> **Architecture baseline v1.7 (R07 partial) · 2026-11-09 · Specification only — NOT production-ready**
 
 個人自用的跨市場投資研究平台：合法資料蒐集 → Point-in-Time 量化訊號 → 回測 → AI 輔助研究 → 不可變預測 → 到期評估與模型改善。
 
@@ -15,7 +15,8 @@
 | ADR-004 | 台灣 MVP：10 個研究標的與 14 類市場訊號 | Accepted scope; **資料覆蓋與授權待驗證** |
 | ADR-005 / R05 | 日線為主、多次檢查、補發及修訂 | Accepted schedule design; source SLAs pending |
 | ADR-006 / R06 | 十年目標（2016-11-09 至 2026-11-09）；PIT 與分批採購 | Accepted design; 7/10 listed early enough, data/rights pending |
-| R07 | 月預算、備份與付費採購上限 | Next decision |
+| ADR-007 / R07-01 | 市場資料 API 不設固定月費上限，逐案報價核准 | Accepted; no spending authorized |
+| R07-02/03/04 | 歷史資料一次性採購、AI API、備份與 UPS | PENDING — decide sequentially |
 
 ## 文件索引
 - [Codex 協作規則](AGENTS.md)
@@ -28,6 +29,8 @@
 - [台灣排程規格（機器可讀）](specs/schedule_tw.json)
 - [ADR-006 十年歷史與 PIT 回測](docs/adr/ADR-006-ten-year-history.md)
 - [歷史涵蓋證據與缺口（機器可讀）](specs/history_coverage_tw.json)
+- [ADR-007 預算與採購治理（分段定案）](docs/adr/ADR-007-budget-governance.md)
+- [預算政策（機器可讀）](specs/budget_policy.json)
 - [資料來源與授權待驗證](docs/data/data-source-matrix.md)
 - [待決事項與 R07](docs/requirements/open-decisions.md)
 - [Instrument Master seed](specs/instruments.json)
@@ -40,6 +43,7 @@
 - 使用 PostgreSQL 管理記錄，Parquet/DuckDB 供授權範圍內之批次研究。
 - R06：2016-11-09 至 2026-11-09 十年研究目標；7 個商品具上市歷史資格，3 個上市時間較短；授權、真實資料列與 PIT vintage 皆待驗證，無採購授權。
 - 確定性程式計算績效；LLM 解讀、提出可驗證假設，**不得改寫已發布預測**。
+- R07-01：市場資料 API 不設固定月費上限；任何新訂閱仍需逐筆書面報價、授權驗證與明確核准。R07-02/03/04 尚未定案。
 - 資料使用權限預設 DENY，另行確認 storage/backtest/AI inference/training 權限。
 - Mac mini 完全無人值守仍為**待實機證明**，不可因 Docker 啟動成功就標示已驗收。
 
