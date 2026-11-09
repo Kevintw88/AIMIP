@@ -36,6 +36,7 @@
 - [預算政策（機器可讀）](specs/budget_policy.json)
 - [ARR-001 架構就緒審查](docs/reviews/ARR-001-R01-R07.md)
 - [Phase 0 Codex 驗收規格](docs/phase0/PHASE0-ACCEPTANCE.md)
+- [Phase 0A 離線驗證範圍與證據索引](docs/phase0/PHASE0A-VALIDATION.md)
 - [Phase 0 機器可讀門檻（全數待測）](specs/readiness_gates.json)
 - [資料來源與授權待驗證](docs/data/data-source-matrix.md)
 - [待決與技術阻擋](docs/requirements/open-decisions.md)
@@ -53,7 +54,7 @@
 - 資料使用權限預設 DENY，另行確認 storage/backtest/AI inference/training 權限。
 - Mac mini 完全無人值守仍為**待實機證明**，不可因 Docker 啟動成功就標示已驗收。
 
-- R01–R07 皆完成策略決策；ARR-001 結論為 PHASE0_PLAN_READY / PRODUCTION_NO_GO。Phase 0 尚未獲得實際執行授權，FileVault/無人登入冷啟動、VM ARM64、授權和外部加密備份恢復均待驗證。
+- R01–R07 皆完成策略決策。使用者已核准 Phase 0A 在獨立分支執行離線契約、靜態與 CI 驗證。Mac mini 唯讀盤點需先取得存取權限。ARR-001 的生產結論維持 `PRODUCTION_NO_GO`，FileVault 與無人登入冷啟動、VM ARM64、資料授權和外部加密備份還原均待驗證。
 
 ## 不在目前階段
 不執行行情抓取、不配置正式 API Key、不購買付費資料、不實作交易下單，也不宣稱任何投資預測結果已被證實。
@@ -62,5 +63,6 @@
 在具 Python 3.12+ 的環境執行：
 ```bash
 python3 scripts/validate_specs.py
+python3 -B scripts/run_phase0a_tests.py
 ```
-或在 GitHub Actions 使用「Specification Validation」。這只驗證目前 catalog 與 ADR 的一致性，**不是**資料供應商、ARM64、VM 自動啟動或交易策略功能測試。
+GitHub Actions「Specification Validation」執行相同指令。第一項檢查 catalog 與 ADR 的一致性，第二項使用合成資料驗證 Phase 0A 契約並阻擋 Python 網路與外部程序嘗試。供應商、實機及交易策略成效各有獨立驗收關卡。

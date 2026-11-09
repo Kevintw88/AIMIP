@@ -88,6 +88,8 @@ def validate():
     assert not readiness["phase0_execution_authorized"]
     assert readiness["production_decision"] == "NO_GO" and not readiness["production_ready"]
     assert not readiness["allow_paid_api_calls"] and not readiness["allow_automatic_purchases"]
+    assert not readiness["allow_market_data_ingest_without_licensed_rights"]
+    assert not readiness["allow_live_broker_orders"]
     assert not readiness["allow_hardware_changes_without_explicit_approval"]
     assert len(readiness["blockers"]) == 8
     assert all(x["status"] == "OPEN" and not x["evidence_verified"] for x in readiness["blockers"])
@@ -125,7 +127,7 @@ def validate():
     ]:
         assert (ROOT / path).is_file(), f"missing specification: {path}"
     print("PASS: R01–R07 accepted policies; R07-04 existing assets first; ARR-001 Phase 0 specification ready")
-    print("NOT RUN: 25 Phase 0 tests / 8 open blockers; no production-readiness evidence")
+    print("BASELINE: 25 gate definitions start NOT_RUN; 8 production blockers remain open")
     print("NOT TESTED: actual ten-year vendor rows, license rights, PIT vintages, ARM64, headless recovery, live APIs")
 
 if __name__ == "__main__":
