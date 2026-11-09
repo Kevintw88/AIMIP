@@ -1,0 +1,329 @@
+{
+  "review_id": "ARR-001",
+  "as_of": "2026-11-09",
+  "project": "AI-MIDEP",
+  "baseline_version": "2.0",
+  "adrs": [
+    "ADR-001",
+    "ADR-002",
+    "ADR-003",
+    "ADR-003A",
+    "ADR-004",
+    "ADR-005",
+    "ADR-006",
+    "ADR-007"
+  ],
+  "architecture_decisions_accepted": true,
+  "phase0_spec_ready": true,
+  "phase0_execution_authorized": false,
+  "allow_paid_api_calls": false,
+  "allow_market_data_ingest_without_licensed_rights": false,
+  "allow_hardware_changes_without_explicit_approval": false,
+  "allow_live_broker_orders": false,
+  "allow_automatic_purchases": false,
+  "production_ready": false,
+  "production_decision": "NO_GO",
+  "required_authorizations_for_risky_work": [
+    "EXPLICIT_USER_PHASE0_SCOPE_APPROVAL",
+    "MAC_OWNER_DEVICE_ACCESS",
+    "PRIVILEGED_SERVICE_INSTALL_APPROVAL",
+    "POWER_FAILURE_TEST_APPROVAL",
+    "FILEVAULT_CHANGE_APPROVAL_SEPARATELY",
+    "LICENSE_APPROVAL_PER_DATASET"
+  ],
+  "blockers": [
+    {
+      "id": "B-01",
+      "title": "FileVault zero-person boot/volume unlock",
+      "severity": "CRITICAL",
+      "related_adr": "ADR-002",
+      "primary_test_id": "PH0-B04",
+      "status": "OPEN",
+      "evidence_verified": false,
+      "production_blocker": true
+    },
+    {
+      "id": "B-02",
+      "title": "Pre-login Linux ARM64 VM + Docker/Compose viability",
+      "severity": "HIGH",
+      "related_adr": "ADR-002",
+      "primary_test_id": "PH0-B03",
+      "status": "OPEN",
+      "evidence_verified": false,
+      "production_blocker": true
+    },
+    {
+      "id": "B-03",
+      "title": "Independent encrypted backup and clean restore; existing asset inventory",
+      "severity": "HIGH",
+      "related_adr": "ADR-007",
+      "primary_test_id": "PH0-B07",
+      "status": "OPEN",
+      "evidence_verified": false,
+      "production_blocker": true
+    },
+    {
+      "id": "B-04",
+      "title": "Dataset license and 10-year/PIT historical availability",
+      "severity": "HIGH",
+      "related_adr": "ADR-006",
+      "primary_test_id": "PH0-O04",
+      "status": "OPEN",
+      "evidence_verified": false,
+      "production_blocker": true
+    },
+    {
+      "id": "B-05",
+      "title": "OpenBB V5 ARM64 compatibility or native connector fallback",
+      "severity": "MEDIUM_HIGH",
+      "related_adr": "ADR-003A",
+      "primary_test_id": "PH0-O01",
+      "status": "OPEN",
+      "evidence_verified": false,
+      "production_blocker": true
+    },
+    {
+      "id": "B-06",
+      "title": "PIT timelines, ETF adjustments, release and correction simulation",
+      "severity": "HIGH",
+      "related_adr": "ADR-005/006",
+      "primary_test_id": "PH0-S04",
+      "status": "OPEN",
+      "evidence_verified": false,
+      "production_blocker": true
+    },
+    {
+      "id": "B-07",
+      "title": "Zero-billable AI and private endpoint enforcement",
+      "severity": "HIGH",
+      "related_adr": "ADR-007",
+      "primary_test_id": "PH0-S06",
+      "status": "OPEN",
+      "evidence_verified": false,
+      "production_blocker": true
+    },
+    {
+      "id": "B-08",
+      "title": "CI, health checks, outage recovery evidence",
+      "severity": "MEDIUM",
+      "related_adr": "ADR-002",
+      "primary_test_id": "PH0-B05",
+      "status": "OPEN",
+      "evidence_verified": false,
+      "production_blocker": true
+    }
+  ],
+  "test_groups": [
+    {
+      "group": "SPEC",
+      "tests": [
+        {
+          "id": "PH0-S01",
+          "status": "NOT_RUN",
+          "evidence_url": null,
+          "run_at": null,
+          "reviewed_by_owner": false
+        },
+        {
+          "id": "PH0-S02",
+          "status": "NOT_RUN",
+          "evidence_url": null,
+          "run_at": null,
+          "reviewed_by_owner": false
+        },
+        {
+          "id": "PH0-S03",
+          "status": "NOT_RUN",
+          "evidence_url": null,
+          "run_at": null,
+          "reviewed_by_owner": false
+        },
+        {
+          "id": "PH0-S04",
+          "status": "NOT_RUN",
+          "evidence_url": null,
+          "run_at": null,
+          "reviewed_by_owner": false
+        },
+        {
+          "id": "PH0-S05",
+          "status": "NOT_RUN",
+          "evidence_url": null,
+          "run_at": null,
+          "reviewed_by_owner": false
+        },
+        {
+          "id": "PH0-S06",
+          "status": "NOT_RUN",
+          "evidence_url": null,
+          "run_at": null,
+          "reviewed_by_owner": false
+        },
+        {
+          "id": "PH0-S07",
+          "status": "NOT_RUN",
+          "evidence_url": null,
+          "run_at": null,
+          "reviewed_by_owner": false
+        },
+        {
+          "id": "PH0-S08",
+          "status": "NOT_RUN",
+          "evidence_url": null,
+          "run_at": null,
+          "reviewed_by_owner": false
+        }
+      ]
+    },
+    {
+      "group": "HOST_INVENTORY",
+      "tests": [
+        {
+          "id": "PH0-H01",
+          "status": "NOT_RUN",
+          "evidence_url": null,
+          "run_at": null,
+          "reviewed_by_owner": false
+        },
+        {
+          "id": "PH0-H02",
+          "status": "NOT_RUN",
+          "evidence_url": null,
+          "run_at": null,
+          "reviewed_by_owner": false
+        },
+        {
+          "id": "PH0-H03",
+          "status": "NOT_RUN",
+          "evidence_url": null,
+          "run_at": null,
+          "reviewed_by_owner": false
+        },
+        {
+          "id": "PH0-H04",
+          "status": "NOT_RUN",
+          "evidence_url": null,
+          "run_at": null,
+          "reviewed_by_owner": false
+        }
+      ]
+    },
+    {
+      "group": "BOOT_RECOVERY",
+      "tests": [
+        {
+          "id": "PH0-B01",
+          "status": "NOT_RUN",
+          "evidence_url": null,
+          "run_at": null,
+          "reviewed_by_owner": false
+        },
+        {
+          "id": "PH0-B02",
+          "status": "NOT_RUN",
+          "evidence_url": null,
+          "run_at": null,
+          "reviewed_by_owner": false
+        },
+        {
+          "id": "PH0-B03",
+          "status": "NOT_RUN",
+          "evidence_url": null,
+          "run_at": null,
+          "reviewed_by_owner": false
+        },
+        {
+          "id": "PH0-B04",
+          "status": "NOT_RUN",
+          "evidence_url": null,
+          "run_at": null,
+          "reviewed_by_owner": false
+        },
+        {
+          "id": "PH0-B05",
+          "status": "NOT_RUN",
+          "evidence_url": null,
+          "run_at": null,
+          "reviewed_by_owner": false
+        },
+        {
+          "id": "PH0-B06",
+          "status": "NOT_RUN",
+          "evidence_url": null,
+          "run_at": null,
+          "reviewed_by_owner": false
+        },
+        {
+          "id": "PH0-B07",
+          "status": "NOT_RUN",
+          "evidence_url": null,
+          "run_at": null,
+          "reviewed_by_owner": false
+        },
+        {
+          "id": "PH0-B08",
+          "status": "NOT_RUN",
+          "evidence_url": null,
+          "run_at": null,
+          "reviewed_by_owner": false
+        }
+      ]
+    },
+    {
+      "group": "OPENBB_SPIKE",
+      "tests": [
+        {
+          "id": "PH0-O01",
+          "status": "NOT_RUN",
+          "evidence_url": null,
+          "run_at": null,
+          "reviewed_by_owner": false
+        },
+        {
+          "id": "PH0-O02",
+          "status": "NOT_RUN",
+          "evidence_url": null,
+          "run_at": null,
+          "reviewed_by_owner": false
+        },
+        {
+          "id": "PH0-O03",
+          "status": "NOT_RUN",
+          "evidence_url": null,
+          "run_at": null,
+          "reviewed_by_owner": false
+        },
+        {
+          "id": "PH0-O04",
+          "status": "NOT_RUN",
+          "evidence_url": null,
+          "run_at": null,
+          "reviewed_by_owner": false
+        },
+        {
+          "id": "PH0-O05",
+          "status": "NOT_RUN",
+          "evidence_url": null,
+          "run_at": null,
+          "reviewed_by_owner": false
+        }
+      ]
+    }
+  ],
+  "phase0_exit_requirements": [
+    "PIT_AND_LICENSE_MOCK_TESTS_PASS",
+    "ZERO_BILLABLE_AI_TEST_PASS",
+    "PINNED_ARM64_OPENBB_OR_NATIVE_FALLBACK_TESTED",
+    "UNATTENDED_RESTART_3_COLD_CYCLES_NO_HUMAN_UNLOCK",
+    "CLEAN_ENCRYPTED_BACKUP_RESTORE",
+    "NO_PUBLIC_DB_OR_SECRETS",
+    "EVIDENCE_AND_APPROVAL_RECORDED"
+  ],
+  "reference_files": [
+    "docs/reviews/ARR-001-R01-R07.md",
+    "docs/phase0/PHASE0-ACCEPTANCE.md",
+    "docs/adr/ADR-007-budget-governance.md",
+    "specs/budget_policy.json"
+  ],
+  "note": "NOT_RUN/BLOCKED are evidence statuses; writing a plan does not count as test success. OpenBB can use native fallback only after comparative spike."
+}
