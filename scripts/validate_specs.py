@@ -14,6 +14,7 @@ def validate():
     schedule = read("schedule_tw.json")
     history = read("history_coverage_tw.json")
     budget = read("budget_policy.json")
+    readiness = read("readiness_gates.json")
     assert schedule["adr"] == "ADR-005" and schedule["decision"] == "ACCEPTED"
     assert schedule["timezone"] == "Asia/Taipei"
     assert schedule["analysis_frequency"] == "DAILY"
@@ -39,7 +40,7 @@ def validate():
     assert all(x["ten_year_listing_eligible"] == (x["listed_at"] <= history["target_start"]) for x in history["instruments"])
     assert all(x["actual_earliest_authorized_row"] is None and not x["pit_verified"] for x in history["instruments"] + history["signals"])
     assert not history["data_access_certified"] and not history["license_approved"] and not history["point_in_time_certified"]
-    assert budget["adr"] == "ADR-007" and budget["decision_status"] == "PARTIALLY_ACCEPTED"
+    assert budget["adr"] == "ADR-007" and budget["decision_status"] == "ACCEPTED" and budget["version"] == "1.0"
     assert budget["r07_01"]["status"] == "ACCEPTED"
     assert budget["r07_01"]["budget_type"] == "NO_FIXED_MONTHLY_CAP"
     assert budget["r07_01"]["authorization"] == "PER_PURCHASE_QUOTE_AND_EXPLICIT_APPROVAL"
@@ -70,8 +71,29 @@ def validate():
     assert ai["offline_mock_inference_allowed"]
     assert ai["deterministic_quant_and_backtest_unaffected"]
     assert ai["disable_retries_and_fallback_to_paid_models"]
-    assert budget["r07_04"]["status"] == "PENDING"
-    assert budget["r07_04"]["backup_capex_twd"] is None and not budget["r07_04"]["equipment_purchase_authorized"]
+    infra = budget["r07_04"]
+    assert infra["status"] == "ACCEPTED"
+    assert infra["policy"] == "EXISTING_ASSETS_FIRST_NO_NEW_CAPEX_BUDGET"
+    assert infra["new_purchase_budget_twd"] == 0
+    assert infra["backup_capex_twd"] is None and infra["ups_capex_twd"] is None
+    assert infra["offsite_backup_monthly_cap_twd"] is None
+    assert infra["preapproved_spend_twd"] == 0 and infra["approved_hardware_orders"] == []
+    assert not infra["equipment_purchase_authorized"] and not infra["offsite_subscription_authorized"]
+    assert not infra["existing_backup_media_verified"] and not infra["existing_ups_verified"]
+    assert not infra["backup_destination_verified"] and not infra["offsite_cost_verified"]
+    assert not infra["restore_test_passed"] and not infra["power_loss_recovery_test_passed"]
+    assert infra["inventory_status"] == "PENDING_VERIFICATION"
+    assert readiness["review_id"] == "ARR-001"
+    assert readiness["architecture_decisions_accepted"] and readiness["phase0_spec_ready"]
+    assert not readiness["phase0_execution_authorized"]
+    assert readiness["production_decision"] == "NO_GO" and not readiness["production_ready"]
+    assert not readiness["allow_paid_api_calls"] and not readiness["allow_automatic_purchases"]
+    assert not readiness["allow_hardware_changes_without_explicit_approval"]
+    assert len(readiness["blockers"]) == 8
+    assert all(x["status"] == "OPEN" and not x["evidence_verified"] for x in readiness["blockers"])
+    all_tests = [t for g in readiness["test_groups"] for t in g["tests"]]
+    assert len(all_tests) == 25 and len({t["id"] for t in all_tests}) == 25
+    assert all(t["status"] == "NOT_RUN" and t["evidence_url"] is None for t in all_tests)
     assert len(instruments) == 10, "R04 must have exactly 10 research instruments"
     assert len(signals) == 14, "R04 must have exactly 14 signal categories"
     assert len({x["id"] for x in instruments}) == len(instruments)
@@ -96,11 +118,14 @@ def validate():
         "docs/adr/ADR-005-daily-refresh.md",
         "docs/adr/ADR-006-ten-year-history.md",
         "docs/adr/ADR-007-budget-governance.md",
+        "docs/reviews/ARR-001-R01-R07.md",
+        "docs/phase0/PHASE0-ACCEPTANCE.md",
         "docs/data/data-source-matrix.md",
         "docs/requirements/open-decisions.md",
     ]:
         assert (ROOT / path).is_file(), f"missing specification: {path}"
-    print("PASS: R04 10+14; R05 schedule; R06 ten-year; R07-01/02 per-purchase policy; R07-03 zero paid AI; R07-04 pending")
+    print("PASS: R01–R07 accepted policies; R07-04 existing assets first; ARR-001 Phase 0 specification ready")
+    print("NOT RUN: 25 Phase 0 tests / 8 open blockers; no production-readiness evidence")
     print("NOT TESTED: actual ten-year vendor rows, license rights, PIT vintages, ARM64, headless recovery, live APIs")
 
 if __name__ == "__main__":
